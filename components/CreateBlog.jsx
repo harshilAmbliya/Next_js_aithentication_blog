@@ -4,9 +4,12 @@
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { Button } from './ui/button';
+import { useToast } from './ui/use-toast';
 
 function CreateBlog() {
-
+    const router = useRouter();
+    const { toast } = useToast();
     const [blog, setBlog] = useState({
         title: '',
         description: '',
@@ -15,17 +18,31 @@ function CreateBlog() {
     })
 
     const handleChange = (e) => {
-        setBlog({
-            ...blog, [e.target.name]: e.target.value
-        })
+        if (e.target.name === 'slug') {
+            // Handle the slug value separately
+            setBlog({
+                ...blog,
+                slug: e.target.value,
+            });
+        } else {
+            // Handle other input fields
+            setBlog({
+                ...blog,
+                [e.target.name]: e.target.value,
+            });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log(blog)
         const post = await axios.post("http://localhost:3000/api/blog/create", blog)
-        if (post.status === 200) {
-           
+        if (post.status === 201) {
+            toast({
+                description: 'Blog created successfully'
+            })
+            router.push("/blog");
+            router.refresh();
         }
         setBlog({
             title: '',
@@ -55,20 +72,16 @@ function CreateBlog() {
                             required
                         />
                     </div>
-                    <div className="mb-4">
+
+                    <div className="mb-4 w-ful">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="slug">
                             Slug
                         </label>
-                        <input
-                            type="text"
-                            id="slug"
-                            name='slug'
-                            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-                            placeholder="Enter the blog title"
-                            value={blog.slug}
-                            onChange={handleChange}
-                            required
-                        />
+                        <select className="select select-bordered w-full " onChange={handleChange} name="slug"   >
+                            <option disabled selected>Select Slug</option>
+                            <option>AI</option>
+                            <option>Webframeworks</option>
+                        </select>
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
@@ -99,12 +112,10 @@ function CreateBlog() {
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
-                    >
+                    <Button type="submit">
                         Create Blog
-                    </button>
+                    </Button>
+
                 </form>
             </div>
         </div>
