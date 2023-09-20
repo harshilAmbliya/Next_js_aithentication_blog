@@ -1,56 +1,50 @@
 "use client"
 
-
-import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import Link from 'next/link'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import React from 'react'
 
 
 const Navbar = () => {
-  const router = useRouter()
-  const handleSignOut = () => {
-    signOut({
-      redirect: false, callbackUrl: "/login"
-    });
-    router.push("/login")
-
-  }
+  const path = usePathname()
   return (
-    <div className='py-5 bg-gray-300'>
-      <div className="flex justify-between items-center  max-w-7xl mx-auto">
-        <div className="h-12 ">
-          <img src="https://www.prisma.io/docs/ai_logo.png" alt="" className='h-full w-full rounded-full' />
-        </div>
+    <div className="navbar bg-base-100 flex justify-between items-center px-4 border-b">
+      <div className="flex">
+        <Link href={'/'} className="normal-case text-xl">BlogMANIA</Link>
+      </div>
+      <div className="flex items-center justify-center space-x-5 text-lg pl-20">
+        <Link href={'/'} className={` ${path === "/" ? ' ' : ''}`}>Home</Link>
+        <Link href={'/about'} className={` ${path === "/" ? ' ' : ''}`}>About</Link>
+        <Link href={'/blog'} className={` ${path === "/" ? ' ' : ''}`}> Blogs</Link>
+        <Link href={'/contact'} className={` ${path === "/" ? ' ' : ''}`}> Contact</Link>
+      </div>
+      <div className="flex-none gap-2 px-3">
+        {/* <div className="form-control">
+          <input type="text" placeholder="Search" className="input input-bordered w-24 md:w-auto" />
+        </div> */}
 
-        <ul className='flex justify-center items-center space-x-3'>
-          <Link href={'/dashboard'}><li className='bg-zinc-50 text-gray-800 cursor-pointer px-3 py-2 rounded-md'>Dashboard</li></Link>
-          <Link href={'/blog'}><li className='bg-zinc-50 text-gray-800 cursor-pointer px-3 py-2 rounded-md'>Blogs</li></Link>
-          <Link href={'/user'}><li className='bg-zinc-50 text-gray-800 cursor-pointer px-3 py-2 rounded-md'>Users</li></Link>
-        </ul>
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+            <div className="w-10 rounded-full">
+              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            </div>
+          </label>
+          <ul tabIndex={0} className="mt-3 z-[1] py-2 px-1 shadow menu menu-sm dropdown-content bg-base-100 rounded-md w-52">
+            <li>
+              <Link className="justify-between" href={'/profile'}>
+                Profile
+                <span className="badge">New</span>
+              </Link>
+            </li>
 
-        <div className="h-12 ">
-
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" className="h-full-w-full" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>
-                <p onClick={handleSignOut}>Logout</p>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <li onClick={() => signOut({
+              callbackUrl: 'http://localhost:3000/login',
+          
+              redirect: false,
+             
+            })}>Logout</li>
+          </ul>
         </div>
       </div>
     </div>

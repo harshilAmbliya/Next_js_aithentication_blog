@@ -19,5 +19,5 @@ export const POST = async (req) => {
         }
     });
     console.log(blog)
-    return NextResponse.json({ blog: blog }, { status: 200 });
+    return NextResponse.json({ blog: blog }, { status: 201 });
 }
