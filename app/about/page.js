@@ -1,11 +1,9 @@
 import React from 'react'
-import { VscHome } from 'react-icons/vsc';
-import { BsFillPersonFill } from 'react-icons/bs';
-import { BiSolidPlaneAlt, BiNews } from 'react-icons/bi';
 import Link from 'next/link';
+import Crousel from '@/components/crousel';
 const page = () => {
   return (
-    <div className=" min-h-screen">
+    <div className="min-h-screen">
 
       <main className="container mx-auto py-8 px-4 ">
         <h2 className="text-2xl font-semibold mb-4 text-center ">About Us</h2>
@@ -123,6 +121,7 @@ const page = () => {
           </div>
         </section>
 
+        {/* <Crousel /> */}
       </main >
 
 

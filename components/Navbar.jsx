@@ -2,12 +2,34 @@
 
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
+import { AvatarGenerator } from 'random-avatar-generator';
+
+
 
 
 const Navbar = () => {
-  const path = usePathname()
+
+  const path = usePathname();
+  const router = useRouter()
+  const generator = new AvatarGenerator();
+  const image = generator.generateRandomAvatar();
+
+  const handleSignOut = async () => {
+    const res = await signOut({
+      callbackUrl: 'http://localhost:3000/login',
+      redirect: false,
+
+    });
+    console.log(res);
+    if (res) {
+      router.push('/login');
+    }
+
+  }
+
+
   return (
     <div className="navbar bg-base-100 flex justify-between items-center px-4 border-b">
       <div className="flex">
@@ -27,7 +49,7 @@ const Navbar = () => {
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
-              <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <img src={image} />
             </div>
           </label>
           <ul tabIndex={0} className="mt-3 z-[1] py-2 px-1 shadow menu menu-sm dropdown-content bg-base-100 rounded-md w-52">
@@ -38,12 +60,11 @@ const Navbar = () => {
               </Link>
             </li>
 
-            <li onClick={() => signOut({
-              callbackUrl: 'http://localhost:3000/login',
-          
-              redirect: false,
-             
-            })}>Logout</li>
+            <li onClick={handleSignOut}>
+              <div className="justify-between">
+                Logout
+              </div>
+            </li>
           </ul>
         </div>
       </div>

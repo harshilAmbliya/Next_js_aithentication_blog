@@ -5,10 +5,11 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Button } from './ui/button';
-
+import { useToast } from './ui/use-toast';
 
 function CreateBlog() {
-    const router = useRouter()
+    const router = useRouter();
+    const { toast } = useToast();
     const [blog, setBlog] = useState({
         title: '',
         description: '',
@@ -37,7 +38,11 @@ function CreateBlog() {
         console.log(blog)
         const post = await axios.post("http://localhost:3000/api/blog/create", blog)
         if (post.status === 201) {
-            router.push("/blog")
+            toast({
+                description: 'Blog created successfully'
+            })
+            router.push("/blog");
+            router.refresh();
         }
         setBlog({
             title: '',
@@ -67,7 +72,7 @@ function CreateBlog() {
                             required
                         />
                     </div>
-                    
+
                     <div className="mb-4 w-ful">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="slug">
                             Slug

@@ -61,14 +61,14 @@ export const authOptions = {
             console.log("session", session)
             return session
         },
-        async signIn({ user, account, profile, email, credentials }) {
-            const isAllowedToSignIn = true
-            if (isAllowedToSignIn) {
-                return true
-            } else {
-                return '/login'
-            }
-        }
+        // async signIn({ user, account, profile, email, credentials }) {
+        //     const isAllowedToSignIn = true
+        //     if (isAllowedToSignIn) {
+        //         return true
+        //     } else {
+        //         return '/login'
+        //     }
+        // }
     }
 
 }

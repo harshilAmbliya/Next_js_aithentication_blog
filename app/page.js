@@ -17,7 +17,7 @@ const page = async () => {
             </Link>
           </div>
           <div className="container mx-auto mt-4">
-
+           
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {blog.map((post, index) => (
                 <BlogPost key={index} {...post} />
